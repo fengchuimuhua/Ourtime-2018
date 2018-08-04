@@ -43,7 +43,7 @@ if __name__ == '__main__':
     poi_info_train_fea_url = '../feature/poi_info_train_fea.txt'
     poi_info_test_fea_url = '../feature/poi_info_test_fea.txt'
 
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 7:
         print(sys.argv[0] + ' [nodup_poi_info_url] [dup_poi_info_url] [deal_poi_train_url] [deal_poi_test_url] [poi_info_train_fea_url] [poi_info_test_fea_url]')
     else:
         nodup_poi_info_url = sys.argv[1]
