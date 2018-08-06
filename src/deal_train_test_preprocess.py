@@ -139,10 +139,10 @@ def process(deal_url, deal_processed_url):
         df_deal['available_in_' + str(k)] = df_deal.weekday_unavailable.apply(lambda x : find_kth_day(x, k))
 
     ## 套餐对比原来价格的折扣
-    df_deal['discount_rate'] = df_deal.price / deal_test.market_price
+    df_deal['discount_rate'] = df_deal.price / df_deal.market_price
 
     ## 套餐与原来价格的差价
-    df_deal['discount'] = df_deal.market_price - deal_test.price
+    df_deal['discount'] = df_deal.market_price - df_deal.price
 
     ## 一天内套餐可用的时间之和
     df_deal['count_time_available'] = df_deal.time_available.apply(count_time_available)
