@@ -53,6 +53,8 @@ def process(dish_processed_url, deal_poi_url, user_recommended_dish_url, merchan
         tag_str = 'dish_tag_' + str(k)
         df_user_poi_recommend_dish_fea[tag_str] = df_user_poi_recommend_dish_fea[tag_str].apply(dish_tag_setter)
 
+    ## 注意生成特征的时候不要加上label列
+    del df_user_poi_recommend_dish_fea['sales']
     df_user_poi_recommend_dish_fea.to_csv(user_poi_recommend_dish_fea_url, sep='\t', index=True)
 
 
@@ -105,6 +107,7 @@ if __name__ == "__main__":
         user_poi_recommend_dish_fea_test_url = sys.argv[8]
 
     process(dish_train_processed_url, deal_poi_train_url, user_recommended_dish_url, merchant_recommended_dish_url, user_poi_recommend_dish_fea_train_url, "train")
+    process(dish_test_processed_url, deal_poi_test_url, user_recommended_dish_url, merchant_recommended_dish_url, user_poi_recommend_dish_fea_test_url, "test")
 
     end_time = datetime.now()
     print('- deal_train_test proprocessing time : ', str(end_time - start_time))
