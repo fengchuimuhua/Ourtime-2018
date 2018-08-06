@@ -8,12 +8,12 @@ from datetime import datetime
 ################################################################################
 # 目的：融合 菜品搭配 和 套餐销量（Train）或者套餐与门店关系（Test）和 用户推荐菜 和 商家推荐菜
 # 先综合四张表，获取在一个门店下，一个套餐中的一个菜品所对应的信息。再降为去掉menu_name信息，只保留 poi_id 和 deal_id
-# 
+#
 # 输入：各表的url地址，tag为"train"或者"test"
 #
 # 最终构成的特征为（KEY为大写）:
 # POI_ID DEAL_ID dishes_price dish_tag user_recommended merchant_recommended rec_cnt
-# 
+#
 # 数据处理方式（可进一步优化）：
 # 1. 去掉了 商家推荐菜 中的price信息，因为已经包含了菜品信息中的菜品price且不包含nan值
 # 2. 取同一个 deal_id 中 dishes_price 的和
@@ -40,7 +40,7 @@ def process(dish_processed_url, deal_poi_url, user_recommended_dish_url, merchan
 
     df_poi_deal_dish_fea.drop(["dishes_group_name", "menu_name", "price"], axis=1, inplace=True)
 
-    tag_ls = map(lambda x: 'dish_tag_' + str(x), range(1,15)) + ["user_recommended","merchant_recommended","rec_cnt","dishes_price"]
+    tag_ls = list(map(lambda x: 'dish_tag_' + str(x), list(range(1,15)))) + ["user_recommended","merchant_recommended","rec_cnt","dishes_price"]
 
     keep_ls = ["poi_id", "deal_id"]
 
@@ -52,7 +52,7 @@ def process(dish_processed_url, deal_poi_url, user_recommended_dish_url, merchan
     for k in range(1, 15):
         tag_str = 'dish_tag_' + str(k)
         df_user_poi_recommend_dish_fea[tag_str] = df_user_poi_recommend_dish_fea[tag_str].apply(dish_tag_setter)
-    
+
     df_user_poi_recommend_dish_fea.to_csv(user_poi_recommend_dish_fea_url, sep='\t', index=True)
 
 
@@ -64,7 +64,7 @@ def merge_dish_dealPoi_and_recommended_dish(df_dish_dealPoi, recommended_dish, t
     df_dish_dealPoi_recommend.loc[df_dish_dealPoi_recommend[tag_str].isnull(), tag_str] = 0
 
     return df_dish_dealPoi_recommend
-    
+
 def dish_tag_setter(x):
     if x>=1:
         return 1
@@ -108,20 +108,3 @@ if __name__ == "__main__":
 
     end_time = datetime.now()
     print('- deal_train_test proprocessing time : ', str(end_time - start_time))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
