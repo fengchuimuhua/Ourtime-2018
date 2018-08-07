@@ -16,11 +16,8 @@ from datetime import datetime
 # 最终构成的特征 Schema 如下(大写字母表示 KEY)，实际上即把 poi_info 转到 deal_id * poi_id维度中去:
 #    [DEAL_ID] [POI_ID] [mt_poi_cate2_name] [price_person] ... [is_poi_rank_nan]
 ################################################################################
-def process(nodup_poi_info_url, dup_poi_info_url, deal_poi_url, poi_info_fea_url):
-    df_nondup_poi_info = pd.read_csv(nodup_poi_info_url, sep='\t')
-    df_dup_poi_info = pd.read_csv(dup_poi_info_url, sep='\t')
-
-    df_poi_info = pd.concat([df_nondup_poi_info, df_dup_poi_info])
+def process(poi_info_processed_url, deal_poi_url, poi_info_fea_url):
+    df_poi_info = pd.read_csv(poi_info_processed_url, sep='\t')
 
     ## 只挑选出 deal_id 和 poi 两个字段, 这两个字段也是我们特征生成的结果数据的 key
     df_deal_poi = pd.read_csv(deal_poi_url, sep='\t')
@@ -34,8 +31,7 @@ if __name__ == '__main__':
     start_time = datetime.now()
 
     ## input table url
-    nodup_poi_info_url = '../feature/nodup_poi_info.txt'
-    dup_poi_info_url = '../feature/dup_poi_info.txt'
+    poi_info_processed_url = '../feature/poi_info_processed.txt'
     deal_poi_train_url = '../raw_data/deal_sales_train.txt'
     deal_poi_test_url = '../raw_data/deal_poi_test.txt'
 
@@ -43,20 +39,19 @@ if __name__ == '__main__':
     poi_info_train_fea_url = '../feature/poi_info_train_fea.txt'
     poi_info_test_fea_url = '../feature/poi_info_test_fea.txt'
 
-    if len(sys.argv) != 7:
-        print(sys.argv[0] + ' [nodup_poi_info_url] [dup_poi_info_url] [deal_poi_train_url] [deal_poi_test_url] [poi_info_train_fea_url] [poi_info_test_fea_url]')
+    if len(sys.argv) != 6:
+        print(sys.argv[0] + ' [poi_info_processed_url] [deal_poi_train_url] [deal_poi_test_url] [poi_info_train_fea_url] [poi_info_test_fea_url]')
     else:
-        nodup_poi_info_url = sys.argv[1]
-        dup_poi_info_url = sys.argv[2]
-        deal_poi_train_url = sys.argv[3]
-        deal_poi_test_url = sys.argv[4]
-        poi_info_train_fea_url = sys.argv[5]
-        poi_info_test_fea_url = sys.argv[6]
+        poi_info_processed_url = sys.argv[1]
+        deal_poi_train_url = sys.argv[2]
+        deal_poi_test_url = sys.argv[3]
+        poi_info_train_fea_url = sys.argv[4]
+        poi_info_test_fea_url = sys.argv[5]
 
     ## generate poi_info train feature
-    process(nodup_poi_info_url, dup_poi_info_url, deal_poi_train_url, poi_info_train_fea_url)
+    process(poi_info_processed_url, deal_poi_train_url, poi_info_train_fea_url)
     ## generate poi_info test feature
-    process(nodup_poi_info_url, dup_poi_info_url, deal_poi_test_url, poi_info_test_fea_url)
+    process(poi_info_processed_url, deal_poi_test_url, poi_info_test_fea_url)
 
     end_time = datetime.now()
     print('- poi_info proprocessing time : ', str(end_time - start_time))
