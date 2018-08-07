@@ -24,7 +24,7 @@ from datetime import datetime
 # 7. rec_cnt 求和，推荐菜的推荐的总次数
 ################################################################################
 
-def process(dish_processed_url, deal_poi_url, user_recommended_dish_url, merchant_recommended_dish_url, user_poi_recommend_dish_fea_url, tag):
+def process(dish_processed_url, deal_poi_url, user_recommended_dish_url, merchant_recommended_dish_url, user_poi_recommend_dish_fea_url):
     df_dish = pd.read_csv(dish_processed_url, sep='\t')
     df_deal_poi = pd.read_csv(deal_poi_url, sep='\t')
 
@@ -44,17 +44,12 @@ def process(dish_processed_url, deal_poi_url, user_recommended_dish_url, merchan
 
     keep_ls = ["poi_id", "deal_id"]
 
-    if tag=="train":
-        keep_ls.append("sales")
-
     df_user_poi_recommend_dish_fea = df_poi_deal_dish_fea.groupby(keep_ls)[tag_ls].sum()
 
     for k in range(1, 15):
         tag_str = 'dish_tag_' + str(k)
         df_user_poi_recommend_dish_fea[tag_str] = df_user_poi_recommend_dish_fea[tag_str].apply(dish_tag_setter)
 
-    ## 注意生成特征的时候不要加上label列
-    del df_user_poi_recommend_dish_fea['sales']
     df_user_poi_recommend_dish_fea.to_csv(user_poi_recommend_dish_fea_url, sep='\t', index=True)
 
 
@@ -106,8 +101,8 @@ if __name__ == "__main__":
         user_poi_recommend_dish_fea_train_url = sys.argv[7]
         user_poi_recommend_dish_fea_test_url = sys.argv[8]
 
-    process(dish_train_processed_url, deal_poi_train_url, user_recommended_dish_url, merchant_recommended_dish_url, user_poi_recommend_dish_fea_train_url, "train")
-    process(dish_test_processed_url, deal_poi_test_url, user_recommended_dish_url, merchant_recommended_dish_url, user_poi_recommend_dish_fea_test_url, "test")
+    process(dish_train_processed_url, deal_poi_train_url, user_recommended_dish_url, merchant_recommended_dish_url, user_poi_recommend_dish_fea_train_url)
+    process(dish_test_processed_url, deal_poi_test_url, user_recommended_dish_url, merchant_recommended_dish_url, user_poi_recommend_dish_fea_test_url)
 
     end_time = datetime.now()
     print('- deal_train_test proprocessing time : ', str(end_time - start_time))
