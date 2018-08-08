@@ -31,7 +31,7 @@ if __name__ == '__main__':
     start_time = datetime.now()
 
     ## input table url
-    poi_info_processed_url = '../feature/poi_info_processed.txt'
+    poi_info_processed_url = '../feature/poi_info_second_processed.txt'
     deal_poi_train_url = '../raw_data/deal_sales_train.txt'
     deal_poi_test_url = '../raw_data/deal_poi_test.txt'
 
