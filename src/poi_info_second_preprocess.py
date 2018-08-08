@@ -140,7 +140,6 @@ def process(poi_info_url, poi_info_processed_url):
 
     # 提取商圈特征
     df_poi_info = extract_business_district_info(df_poi_info)
-    df_poi_info.drop(['barea_id'],axis=1,inplace=True)
 
     #print(df_poi_info.shape)
     #print(df_poi_info.dtypes)
