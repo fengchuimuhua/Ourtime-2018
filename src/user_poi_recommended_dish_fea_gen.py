@@ -40,7 +40,9 @@ def process(dish_processed_url, deal_poi_url, user_recommended_dish_url, merchan
 
     df_poi_deal_dish_fea.drop(["dishes_group_name", "menu_name", "price"], axis=1, inplace=True)
 
-    tag_ls = list(map(lambda x: 'dish_tag_' + str(x), list(range(1,15)))) + ["user_recommended","merchant_recommended","rec_cnt","dishes_price"]
+    df_poi_deal_dish_fea["menu_number"] = 1
+
+    tag_ls = list(map(lambda x: 'dish_tag_' + str(x), list(range(1,15)))) + ["user_recommended","merchant_recommended","rec_cnt","dishes_price","menu_number"]
 
     keep_ls = ["poi_id", "deal_id"]
 
